@@ -1,0 +1,32 @@
+POST http://localhost:3001/api/persons 
+content-type: application/json 
+
+{
+    "name": "Bob Smith",
+    "number": "123-456-7890"
+}
+
+###
+POST http://localhost:3001/api/persons 
+content-type: application/json 
+
+{
+    "name": "Bob Smith",
+    "number": "111-111-1111"
+}
+
+###
+POST http://localhost:3001/api/persons 
+content-type: application/json 
+
+{
+    "name": "Bob"
+}
+
+###
+POST http://localhost:3001/api/persons 
+content-type: application/json 
+
+{
+    "number": "111-111-1111"
+}

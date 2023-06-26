@@ -2,30 +2,25 @@ const express = require("express");
 const morgan = require('morgan'); 
 const app = express(); 
 
+morgan.token('data', (req, res) => {
+  return JSON.stringify(req.body); 
+});  
+
 app.use(express.json()); 
 app.use(morgan((tokens, req, res) => {
-  if (tokens.method(req, res) === 'POST') {
-
-    morgan.token('data', (req, res) => {
-      return JSON.stringify(req.body); 
-    });  
-
-    return [
-      tokens.method(req, res),
-      tokens.url(req, res),
-      tokens.status(req, res),
-      tokens.res(req, res, 'content-length'), '-',
-      tokens['response-time'](req, res), 'ms', 
-      tokens.data(req, res) 
-    ].join(' ')
-  }
-  return [
+  let result = [
     tokens.method(req, res),
     tokens.url(req, res),
     tokens.status(req, res),
     tokens.res(req, res, 'content-length'), '-',
-    tokens['response-time'](req, res), 'ms'
-  ].join(' ')
+    tokens['response-time'](req, res), 'ms', 
+  ].join(' ');
+
+  if (tokens.method(req, res) === 'POST') {
+    result += ' ' + tokens.data(req, res); 
+  }
+
+  return result; 
 })); 
 
 
@@ -118,7 +113,7 @@ app.post('/api/persons', (request, response) => {
   response.json(person);
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 });

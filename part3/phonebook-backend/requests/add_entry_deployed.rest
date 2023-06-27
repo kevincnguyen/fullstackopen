@@ -1,0 +1,32 @@
+POST https://phonebook-f3ds.onrender.com/api/persons 
+content-type: application/json 
+
+{
+    "name": "Bob Smith",
+    "number": "123-456-7890"
+}
+
+###
+POST https://phonebook-f3ds.onrender.com/api/persons 
+content-type: application/json 
+
+{
+    "name": "Bob Smith",
+    "number": "111-111-1111"
+}
+
+###
+POST https://phonebook-f3ds.onrender.com/api/persons 
+content-type: application/json 
+
+{
+    "name": "Bob"
+}
+
+###
+POST https://phonebook-f3ds.onrender.com/api/persons 
+content-type: application/json 
+
+{
+    "number": "111-111-1111"
+}

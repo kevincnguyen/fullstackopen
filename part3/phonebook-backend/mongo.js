@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
 if (process.argv.length < 3) {
-    console.log('Give password as argument');
+    console.log('Give password as argument.');
     process.exit(1);
 }
 
 if (process.argv.length === 4 || process.argv.length > 5) {
-    console.log('Unable to process request');
+    console.log('Unable to process request. Invalid number of arguments.');
     process.exit(1);
 }
 

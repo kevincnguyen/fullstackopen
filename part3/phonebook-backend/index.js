@@ -10,6 +10,7 @@ morgan.token('data', (req, res) => {
   return JSON.stringify(req.body); 
 });  
 
+app.use(express.static('build')); 
 app.use(express.json()); 
 app.use(cors()); 
 app.use(morgan((tokens, req, res) => {
@@ -27,34 +28,40 @@ app.use(morgan((tokens, req, res) => {
 
   return result; 
 })); 
-app.use(express.static('build')); 
 
-let persons = [
-    { 
-      "id": 1,
-      "name": "Arto Hellas", 
-      "number": "040-123456"
-    },
-    { 
-      "id": 2,
-      "name": "Ada Lovelace", 
-      "number": "39-44-5323523"
-    },
-    { 
-      "id": 3,
-      "name": "Dan Abramov", 
-      "number": "12-43-234345"
-    },
-    { 
-      "id": 4,
-      "name": "Mary Poppendieck", 
-      "number": "39-23-6423122"
-    }
-];
+// let persons = [
+//     { 
+//       "id": 1,
+//       "name": "Arto Hellas", 
+//       "number": "040-123456"
+//     },
+//     { 
+//       "id": 2,
+//       "name": "Ada Lovelace", 
+//       "number": "39-44-5323523"
+//     },
+//     { 
+//       "id": 3,
+//       "name": "Dan Abramov", 
+//       "number": "12-43-234345"
+//     },
+//     { 
+//       "id": 4,
+//       "name": "Mary Poppendieck", 
+//       "number": "39-23-6423122"
+//     }
+// ];
+
+// const generateId = () => {
+//   const id = Math.floor(Math.random() * 9999);
+//   return id;
+// }
 
 // Sends # of people and date
 app.get('/info', (request, response) => {
-  const numPeople = persons.length; 
+  // const numPeople = persons.length;
+  const numPeople = 55555; 
+
   const current = new Date();
   const result = `<p>Phonebook has info for ${numPeople} people</p> 
                   <p>${current}</p>`  
@@ -63,8 +70,8 @@ app.get('/info', (request, response) => {
 
 // Sends persons list
 app.get('/api/persons', (request, response) => {
-  Person.find({}).then(persons => {
-    response.json(persons);
+  Person.find({}).then(personList => {
+    response.json(personList);
   })
 }); 
 
@@ -82,17 +89,19 @@ app.get('/api/persons/:id', (request, response) => {
 }); 
 
 // Deletes phonebook entry of person with id
-app.delete('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id);
-  persons = persons.filter(person => person.id !== id);
-
-  response.status(204).end();
+app.delete('/api/persons/:id', (request, response, next) => {
+  Person.findByIdAndRemove(request.params.id)
+    .then(result => {
+      if (result) {
+        console.log('Person successfully deleted');
+        response.status(204).end();
+      } else { 
+        console.log('Person not found');
+        response.status(404).end();
+      }
+    })
+    .catch(error => next(error)); 
 }); 
-
-// const generateId = () => {
-//   const id = Math.floor(Math.random() * 9999);
-//   return id;
-// }
 
 // Adds new phonebook entry
 app.post('/api/persons', (request, response) => {
@@ -119,6 +128,21 @@ app.post('/api/persons', (request, response) => {
     response.json(savedPerson);
   })
 });
+
+const invalidId = (error, request, response, next) => {
+  console.log(error.message);
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' });
+  } 
+  next(error);
+}
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(invalidId); 
+app.use(unknownEndpoint); 
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

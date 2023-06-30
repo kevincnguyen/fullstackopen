@@ -131,10 +131,10 @@ app.put('/api/persons/:id', (request, response, next) => {
 });
 
 // Adds new phonebook entry
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
   const body = request.body; 
   
-  if (!body.name || !body.number) {
+  if (body.name === undefined || body.number === undefined) {
     return response.status(400).json({
       error: 'name or number is missing'
     }); 
@@ -145,29 +145,34 @@ app.post('/api/persons', (request, response) => {
     number: body.number 
   });
 
-  newPerson.save().then(savedPerson => {
-    response.json(savedPerson);
-  })
+  newPerson.save()
+    .then(savedPerson => {
+      response.json(savedPerson);
+    })
+    .catch(error => next(error)); 
 });
 
-// Error Handling: 
+// Error Handling:
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint); 
 
 const errorHandler = (error, request, response, next) => {
   console.log(error.message);
 
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' });
-  } 
+  }  else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
+  }
 
   next(error);
 }
 
-const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
-}
-
 app.use(errorHandler); 
-app.use(unknownEndpoint); 
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

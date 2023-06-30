@@ -12,7 +12,25 @@ content-type: application/json
 
 {
     "name": "Bob Smith",
-    "number": "111-111-1111"
+    "number": "111-1111111"
+}
+
+###
+POST http://localhost:3001/api/persons 
+content-type: application/json 
+
+{
+    "name": "Bob Smith",
+    "number": "1-1111111"
+}
+
+###
+POST http://localhost:3001/api/persons 
+content-type: application/json 
+
+{
+    "name": "Bob",
+    "number": "10-22-334455"
 }
 
 ###
@@ -28,5 +46,14 @@ POST http://localhost:3001/api/persons
 content-type: application/json 
 
 {
+    "number": "111-111-1111"
+}
+
+###
+POST http://localhost:3001/api/persons 
+content-type: application/json 
+
+{
+    "name": "Bo",
     "number": "111-111-1111"
 }

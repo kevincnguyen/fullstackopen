@@ -1,18 +1,18 @@
 require('dotenv').config();
-console.log(require("dotenv").config())
 const express = require("express"); 
 const morgan = require('morgan'); 
 const cors = require('cors');
 const app = express(); 
 const Person = require('./models/person');
 
+app.use(express.static('build')); 
+app.use(express.json()); 
+app.use(cors()); 
+
 morgan.token('data', (req, res) => {
   return JSON.stringify(req.body); 
 });  
 
-app.use(express.static('build')); 
-app.use(express.json()); 
-app.use(cors()); 
 app.use(morgan((tokens, req, res) => {
   let result = [
     tokens.method(req, res),
@@ -57,35 +57,41 @@ app.use(morgan((tokens, req, res) => {
 //   return id;
 // }
 
+// Routing: 
+
 // Sends # of people and date
 app.get('/info', (request, response) => {
-  // const numPeople = persons.length;
-  const numPeople = 55555; 
+  Person.find({}).then(personList => {
+    let numPeople = 0; 
+    personList.forEach(person => numPeople++); 
+    const current = new Date();
+    const result = `<p>Phonebook has info for ${numPeople} people</p> 
+                    <p>${current}</p>` 
 
-  const current = new Date();
-  const result = `<p>Phonebook has info for ${numPeople} people</p> 
-                  <p>${current}</p>`  
-  response.send(result);
+    response.send(result);
+  })
 });  
 
-// Sends persons list
+// Gets list of people
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(personList => {
     response.json(personList);
   })
 }); 
 
-// Sends information about person with id
-app.get('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id);
-  const person = persons.find(person => person.id === id);
-
-  if (person) {
-    response.json(person);
-  } else { 
-    response.statusMessage = "Person not found";
-    response.status(404).end();
-  }
+// Gets information about person with id
+app.get('/api/persons/:id', (request, response, next) => {
+  Person.findById(request.params.id)
+    .then(result => {
+      if (result) {
+        response.json(result);
+      } else { 
+        console.log("Person not found");
+        response.statusMessage = "Person not found";
+        response.status(404).end();
+      }
+    })
+    .catch(error => next(error)); 
 }); 
 
 // Deletes phonebook entry of person with id
@@ -96,12 +102,29 @@ app.delete('/api/persons/:id', (request, response, next) => {
         console.log('Person successfully deleted');
         response.status(204).end();
       } else { 
-        console.log('Person not found');
+        console.log("Person not found");
+        response.statusMessage = "Person not found";
         response.status(404).end();
       }
     })
     .catch(error => next(error)); 
 }); 
+
+// Updates existing phonebook entry 
+app.put('/api/persons/:id', (request, response, next) => {
+  const body = request.body;
+
+  const requestPerson = {
+    name: body.name, 
+    number: body.number
+  }
+
+  Person.findByIdAndUpdate(request.params.id, requestPerson, { new: true })
+    .then(updatedPerson => {
+      response.json(updatedPerson); 
+    })
+    .catch(error => next(error)); 
+});
 
 // Adds new phonebook entry
 app.post('/api/persons', (request, response) => {
@@ -113,21 +136,17 @@ app.post('/api/persons', (request, response) => {
     }); 
   }
 
-  if (persons.find(person => person.name === body.name)) {
-    return response.status(400).json({
-      error: 'name must be unique'
-    });
-  }
-
-  const p = new Person({
+  const newPerson = new Person({
     name: body.name, 
     number: body.number 
   });
 
-  p.save().then(savedPerson => {
+  newPerson.save().then(savedPerson => {
     response.json(savedPerson);
   })
 });
+
+// Error Handling: 
 
 const invalidId = (error, request, response, next) => {
   console.log(error.message);

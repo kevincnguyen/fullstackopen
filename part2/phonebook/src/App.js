@@ -47,7 +47,8 @@ const App = () => {
           setMessage(`Added ${newName}.`);
         })
         .catch(error => {
-          setMessage(`Information of ${newName} has already been removed from the server.`);
+          // setMessage(`Information of ${newName} has already been removed from the server.`);
+          setMessage(error.response.data.error); 
           setSuccess(false);
         });
     }

@@ -119,7 +119,11 @@ app.put('/api/persons/:id', (request, response, next) => {
     number: body.number
   }
 
-  Person.findByIdAndUpdate(request.params.id, requestPerson, { new: true })
+  Person.findByIdAndUpdate(
+      request.params.id, 
+      requestPerson, 
+      { new: true, runValidators: true, context: 'query' }
+    )
     .then(updatedPerson => {
       response.json(updatedPerson); 
     })
@@ -148,11 +152,13 @@ app.post('/api/persons', (request, response) => {
 
 // Error Handling: 
 
-const invalidId = (error, request, response, next) => {
+const errorHandler = (error, request, response, next) => {
   console.log(error.message);
+
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' });
   } 
+
   next(error);
 }
 
@@ -160,7 +166,7 @@ const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
 
-app.use(invalidId); 
+app.use(errorHandler); 
 app.use(unknownEndpoint); 
 
 const PORT = process.env.PORT;

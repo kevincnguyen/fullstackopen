@@ -127,7 +127,7 @@ describe('most blogs', () => {
         expect(result).toEqual(expected);
     });
 
-    test('when list has only one blog, is that one author', () => {
+    test('when list has only one blog, is the only author', () => {
         const result = listHelper.mostBlogs(oneBlogList);
 
         const expected = {
@@ -162,7 +162,7 @@ describe('most likes', () => {
         expect(result).toEqual(expected);
     });
 
-    test('when list has only one blog, is that one author', () => {
+    test('when list has only one blog, is the only author', () => {
         const result = listHelper.mostLikes(oneBlogList);
 
         const expected = {

@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import PropTypes from 'prop-types'
 import Message from './Message'
 import BlogList from './BlogList'
 import Togglable from './Togglable'
@@ -25,6 +26,18 @@ const BlogForm = ({ message, setMessage, success, setSuccess, name, user, setUse
       <BlogList blogs={blogs} setBlogs={setBlogs} user={user}/>
     </div>
   )
+}
+
+BlogForm.propTypes = {
+  message: PropTypes.string, 
+  setMessage: PropTypes.func.isRequired,
+  success: PropTypes.bool.isRequired, 
+  setSuccess: PropTypes.func.isRequired, 
+  name: PropTypes.string.isRequired,
+  user: PropTypes.object.isRequired, 
+  setUser: PropTypes.func.isRequired,
+  blogs: PropTypes.array.isRequired, 
+  setBlogs: PropTypes.func.isRequired,
 }
 
 export default BlogForm

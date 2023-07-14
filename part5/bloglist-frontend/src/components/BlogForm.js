@@ -15,11 +15,11 @@ const BlogForm = ({ message, setMessage, success, setSuccess, name, user, setUse
       <Message message={message} success={success} />
       <LogoutButton name={name} setUser={setUser} />
       <Togglable buttonLabel='new blog' ref={blogFormRef}>
-        <CreateForm 
-          setMessage={setMessage} 
-          setSuccess={setSuccess} 
-          blogs={blogs} 
-          setBlogs={setBlogs} 
+        <CreateForm
+          setMessage={setMessage}
+          setSuccess={setSuccess}
+          blogs={blogs}
+          setBlogs={setBlogs}
           blogFormRef={blogFormRef}
         />
       </Togglable>
@@ -29,14 +29,14 @@ const BlogForm = ({ message, setMessage, success, setSuccess, name, user, setUse
 }
 
 BlogForm.propTypes = {
-  message: PropTypes.string, 
+  message: PropTypes.string,
   setMessage: PropTypes.func.isRequired,
-  success: PropTypes.bool.isRequired, 
-  setSuccess: PropTypes.func.isRequired, 
+  success: PropTypes.bool.isRequired,
+  setSuccess: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
-  user: PropTypes.object.isRequired, 
+  user: PropTypes.object.isRequired,
   setUser: PropTypes.func.isRequired,
-  blogs: PropTypes.array.isRequired, 
+  blogs: PropTypes.array.isRequired,
   setBlogs: PropTypes.func.isRequired,
 }
 

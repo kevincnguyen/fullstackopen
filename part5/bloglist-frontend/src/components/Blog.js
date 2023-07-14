@@ -15,7 +15,7 @@ const Blog = ({ blog, setBlogs, user }) => {
   const handleView = () => {
     setView(!view)
   }
-  
+
   // clicking like button too fast will not reigster all clicks
   const handleLike = async () => {
     try {
@@ -33,7 +33,7 @@ const Blog = ({ blog, setBlogs, user }) => {
       console.error('error: ', exception)
     }
   }
-  
+
   const hidden = (
     <>
       <button onClick={handleView}>view</button>
@@ -52,7 +52,7 @@ const Blog = ({ blog, setBlogs, user }) => {
       }
     }
   }
-  
+
   const fullview = (
     <>
       <button onClick={handleView}>hide</button>
@@ -70,8 +70,8 @@ const Blog = ({ blog, setBlogs, user }) => {
         {blog.title} {blog.author}
       </span>
       {view ? fullview : hidden}
-    </div>  
+    </div>
   )
-} 
+}
 
 export default Blog

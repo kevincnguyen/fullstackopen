@@ -6,13 +6,13 @@ import blogService from './services/blogs'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [message, setMessage] = useState(null);
-  const [success, setSuccess] = useState(true);
+  const [message, setMessage] = useState(null)
+  const [success, setSuccess] = useState(true)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -25,26 +25,26 @@ const App = () => {
   }, [])
 
   if (user === null) {
-    return <LoginForm 
-              message={message}
-              setMessage={setMessage}
-              success={success}
-              setSuccess={setSuccess}
-              setUser={setUser}
-           />
+    return <LoginForm
+      message={message}
+      setMessage={setMessage}
+      success={success}
+      setSuccess={setSuccess}
+      setUser={setUser}
+    />
   }
 
-  return <BlogForm 
-            message={message}
-            setMessage={setMessage}
-            success={success}
-            setSuccess={setSuccess}
-            name={user.name}
-            user={user}
-            setUser={setUser}
-            blogs={blogs}
-            setBlogs={setBlogs}
-         />
+  return <BlogForm
+    message={message}
+    setMessage={setMessage}
+    success={success}
+    setSuccess={setSuccess}
+    name={user.name}
+    user={user}
+    setUser={setUser}
+    blogs={blogs}
+    setBlogs={setBlogs}
+  />
 }
 
 export default App

@@ -39,11 +39,12 @@ const App = () => {
             setMessage={setMessage}
             success={success}
             setSuccess={setSuccess}
+            name={user.name}
             user={user}
             setUser={setUser}
             blogs={blogs}
             setBlogs={setBlogs}
-          />
+         />
 }
 
 export default App

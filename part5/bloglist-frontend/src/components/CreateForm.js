@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
 
-const CreateForm = ({ setMessage, setSuccess, blogs, setBlogs, blogFormRef }) => {
+const CreateForm = ({ setMessage, setSuccess, blogs, setBlogs, blogFormRef, createBlog }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -23,7 +22,7 @@ const CreateForm = ({ setMessage, setSuccess, blogs, setBlogs, blogFormRef }) =>
     try {
       blogFormRef.current.toggleVisibility()
       console.log('creating new blog: ', title, author, url)
-      const blog = await blogService.create({
+      const blog = await createBlog({
         title, author, url
       })
       setBlogs(blogs.concat(blog))

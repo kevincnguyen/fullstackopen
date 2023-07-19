@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, setBlogs, user }) => {
+const Blog = ({ blog, setBlogs, user, handleLike }) => {
   const [view, setView] = useState(false)
 
   const blogStyle = {
@@ -17,22 +17,22 @@ const Blog = ({ blog, setBlogs, user }) => {
   }
 
   // clicking like button too fast will not reigster all clicks
-  const handleLike = async () => {
-    try {
-      await blogService.update({
-        title: blog.title,
-        author: blog.author,
-        url: blog.url,
-        likes: blog.likes + 1,
-        user: blog.user.id
-      }, blog.id)
-      const updatedBlogs = await blogService.getAll()
-      setBlogs(updatedBlogs)
-    } catch (exception) {
-      console.log('unable to like blog')
-      console.error('error: ', exception)
-    }
-  }
+  // const handleLike = async () => {
+  //   try {
+  //     await blogService.update({
+  //       title: blog.title,
+  //       author: blog.author,
+  //       url: blog.url,
+  //       likes: blog.likes + 1,
+  //       user: blog.user.id
+  //     }, blog.id)
+  //     const updatedBlogs = await blogService.getAll()
+  //     setBlogs(updatedBlogs)
+  //   } catch (exception) {
+  //     console.log('unable to like blog')
+  //     console.error('error: ', exception)
+  //   }
+  // }
 
   const hidden = (
     <>
@@ -58,14 +58,14 @@ const Blog = ({ blog, setBlogs, user }) => {
       <button onClick={handleView}>hide</button>
       <p>{blog.url}</p>
       <span>likes {blog.likes}</span>
-      <button onClick={handleLike}>like</button>
+      <button onClick={() => handleLike(blog.title, blog.author, blog.url, blog.likes, user.id, blog.id)}>like</button>
       <p>{blog.user.name}</p>
       {blog.user.username === user.username ? <button onClick={handleRemove}>remove</button> : null}
     </>
   )
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       <span>
         {blog.title} {blog.author}
       </span>

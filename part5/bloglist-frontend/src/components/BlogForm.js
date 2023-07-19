@@ -5,6 +5,7 @@ import BlogList from './BlogList'
 import Togglable from './Togglable'
 import CreateForm from './CreateForm'
 import LogoutButton from './LogoutButton'
+import blogService from '../services/blogs'
 
 const BlogForm = ({ message, setMessage, success, setSuccess, name, user, setUser, blogs, setBlogs }) => {
   const blogFormRef = useRef()
@@ -21,6 +22,7 @@ const BlogForm = ({ message, setMessage, success, setSuccess, name, user, setUse
           blogs={blogs}
           setBlogs={setBlogs}
           blogFormRef={blogFormRef}
+          createBlog={blogService.create}
         />
       </Togglable>
       <BlogList blogs={blogs} setBlogs={setBlogs} user={user}/>

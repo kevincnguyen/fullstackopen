@@ -2,7 +2,7 @@ import Blog from './Blog'
 import blogService from '../services/blogs'
 
 const BlogList = ({ blogs, setBlogs, user }) => {
-  const sortedBlogs = blogs.sort((a, b) => a.likes - b.likes)
+  const sortedBlogs = blogs.sort((a, b) => a.likes - b.likes).reverse()
 
   const handleLike = async (title, author, url, likes, userId, blogId) => {
     try {

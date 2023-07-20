@@ -75,7 +75,7 @@ const CreateForm = ({ setMessage, setSuccess, blogs, setBlogs, blogFormRef, crea
             onChange={handleUrl}
           />
         </div>
-        <button type='submit'>create</button>
+        <button type='submit' id='create-button'>create</button>
       </form>
     </div>
   )

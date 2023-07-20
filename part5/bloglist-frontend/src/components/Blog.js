@@ -36,7 +36,7 @@ const Blog = ({ blog, setBlogs, user, handleLike }) => {
 
   const hidden = (
     <>
-      <button onClick={handleView}>view</button>
+      <button id='view-button' onClick={handleView}>view</button>
     </>
   )
 
@@ -55,10 +55,10 @@ const Blog = ({ blog, setBlogs, user, handleLike }) => {
 
   const fullview = (
     <>
-      <button onClick={handleView}>hide</button>
+      <button onClick={handleView} id='hide-button'>hide</button>
       <p>{blog.url}</p>
       <span>likes {blog.likes}</span>
-      <button onClick={() => handleLike(blog.title, blog.author, blog.url, blog.likes, user.id, blog.id)}>like</button>
+      <button id='like-button' onClick={() => handleLike(blog.title, blog.author, blog.url, blog.likes, user.id, blog.id)}>like</button>
       <p>{blog.user.name}</p>
       {blog.user.username === user.username ? <button onClick={handleRemove}>remove</button> : null}
     </>

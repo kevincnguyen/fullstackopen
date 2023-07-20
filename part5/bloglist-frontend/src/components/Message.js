@@ -32,7 +32,7 @@ const Message = ({ message, success }) => {
   }
 
   return (
-    <div style={errorStyle}>
+    <div style={errorStyle} className='error'>
       {message}
     </div>
   )
